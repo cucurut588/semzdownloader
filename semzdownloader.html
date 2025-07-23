@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SemzDownloader - TikTok Downloader & MP3 Converter</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h1 {
+            color: #ff0050;
+            margin-bottom: 10px;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ff0050;
+        }
+        .description {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .download-box {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        .input-group {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px 0 0 5px;
+            font-size: 16px;
+            outline: none;
+        }
+        input[type="text"]:focus {
+            border-color: #ff0050;
+        }
+        button {
+            background-color: #ff0050;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #e00046;
+        }
+        .options {
+            margin-top: 15px;
+        }
+        .option-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        select {
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            width: 100%;
+            max-width: 300px;
+        }
+        .how-to-use {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .how-to-use h2 {
+            color: #ff0050;
+            margin-top: 0;
+        }
+        ol {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 14px;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid #ff0050;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .result {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .download-btn {
+            background-color: #25D366;
+            padding: 10px 15px;
+            border-radius: 5px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin: 5px;
+        }
+        .download-btn:hover {
+            background-color: #1da851;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">SemzDownloader</div>
+            <h1>TikTok Video Downloader & MP3 Converter</h1>
+            <p class="description">Download TikTok videos without watermark and convert to MP3 easily</p>
+        </header>
+
+        <div class="download-box">
+            <div class="input-group">
+                <input type="text" id="tiktok-url" placeholder="Paste TikTok video URL here...">
+                <button id="download-btn">Download</button>
+            </div>
+            
+            <div class="options">
+                <label class="option-label">Download Options:</label>
+                <select id="download-option">
+                    <option value="video">Video (No Watermark)</option>
+                    <option value="mp3">Audio (MP3)</option>
+                </select>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Processing your request...</p>
+            </div>
+
+            <div class="result" id="result">
+                <h3>Your Download is Ready!</h3>
+                <div id="download-links"></div>
+            </div>
+        </div>
+
+        <div class="how-to-use">
+            <h2>How to Use SemzDownloader</h2>
+            <ol>
+                <li>Copy the TikTok video link from the app or website</li>
+                <li>Paste the URL in the input box above</li>
+                <li>Choose whether you want to download the video (without watermark) or convert to MP3</li>
+                <li>Click the "Download" button</li>
+                <li>Wait for processing and download your file when ready</li>
+            </ol>
+        </div>
+
+        <footer>
+            <p>SemzDownloader &copy; 2023 | All Rights Reserved</p>
+            <p>This tool is for personal use only</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('download-btn').addEventListener('click', function() {
+            const tiktokUrl = document.getElementById('tiktok-url').value.trim();
+            const downloadOption = document.getElementById('download-option').value;
+            
+            if (!tiktokUrl) {
+                alert('Please enter a TikTok video URL');
+                return;
+            }
+            
+            if (!tiktokUrl.includes('tiktok.com')) {
+                alert('Please enter a valid TikTok URL');
+                return;
+            }
+            
+            // Show loading spinner
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+            
+            // Simulate processing (in a real app, you would call your backend API here)
+            setTimeout(function() {
+                document.getElementById('loading').style.display = 'none';
+                
+                const downloadLinks = document.getElementById('download-links');
+                downloadLinks.innerHTML = '';
+                
+                if (downloadOption === 'video') {
+                    downloadLinks.innerHTML = `
+                        <a href="#" class="download-btn">Download Video (HD)</a>
+                        <a href="#" class="download-btn">Download Video (SD)</a>
+                    `;
+                } else {
+                    downloadLinks.innerHTML = `
+                        <a href="#" class="download-btn">Download MP3 (High Quality)</a>
+                    `;
+                }
+                
+                document.getElementById('result').style.display = 'block';
+            }, 2000);
+        });
+        
+        // This is just a placeholder for the actual download functionality
+        // In a real implementation, you would need to:
+        // 1. Send the TikTok URL to your backend
+        // 2. Your backend would use a TikTok API or scraper to get the video
+        // 3. Process the video (remove watermark or convert to MP3)
+        // 4. Return the download link to the frontend
+        
+        // For a complete solution, you would need server-side code (PHP, Node.js, Python, etc.)
+        // and possibly a TikTok API service or library.
+    </script>
+</body>
+</html>
