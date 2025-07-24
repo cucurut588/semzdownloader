@@ -3,381 +3,1331 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SemzDownloader - TikTok Video Downloader</title>
+    <title>SemzDownloader - Download TikTok, YouTube, Instagram</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #6a11cb;
-            --secondary: #2575fc;
-            --accent: #ff4d8d;
-            --light: #f8f9fa;
-            --dark: #212529;
+            --primary: #6C5CE7;
+            --secondary: #A29BFE;
+            --accent: #FD79A8;
+            --dark: #2D3436;
+            --light: #F5F6FA;
+            --success: #00B894;
+            --danger: #D63031;
         }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
         body {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
         }
-        
-        .container {
-            width: 100%;
-            max-width: 600px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        
-        .header {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             color: white;
-            padding: 25px;
+            padding: 30px;
             text-align: center;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 20px rgba(108, 92, 231, 0.2);
             position: relative;
+            overflow: hidden;
         }
-        
+        header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(255,255,255,0.05)" d="M0,0 L100,0 L100,100 Q50,80 0,100 Z"></path></svg>');
+            background-size: 100% 100%;
+            pointer-events: none;
+        }
         .logo {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 5px;
+            font-weight: 800;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 50px;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .description {
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        .service {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+        .service:hover {
+            transform: translateY(-5px);
+        }
+        .service h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .service-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 1.5em;
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
         }
-        
-        .logo i {
-            margin-right: 15px;
-            color: var(--accent);
-        }
-        
-        .subtitle {
-            font-size: 1rem;
-            opacity: 0.9;
-            font-weight: 300;
-        }
-        
-        .content {
-            padding: 30px;
-        }
-        
         .input-group {
-            display: flex;
-            margin-bottom: 20px;
-            border-radius: 50px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
         }
-        
-        .url-input {
-            flex: 1;
-            padding: 15px 20px;
-            border: none;
-            font-size: 1rem;
-            background: var(--light);
-            color: var(--dark);
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
         }
-        
-        .url-input:focus {
+        input[type="text"]:focus {
+            border-color: var(--primary);
             outline: none;
-            background: white;
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
         }
-        
-        .download-btn {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: white;
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        button {
+            flex: 1;
+            padding: 15px;
             border: none;
-            padding: 0 30px;
-            font-size: 1rem;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
-        
-        .download-btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-        
-        .download-btn:active {
-            transform: translateY(0);
-        }
-        
-        .result-container {
-            display: none;
-            margin-top: 30px;
-            text-align: center;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .video-preview {
-            width: 100%;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            border: 3px solid white;
-        }
-        
-        .download-link {
-            display: inline-block;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
+        .btn-primary {
+            background: var(--primary);
             color: white;
-            padding: 12px 30px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            margin-top: 10px;
         }
-        
-        .download-link:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        .btn-primary:hover {
+            background: #5a4bd1;
         }
-        
+        .btn-accent {
+            background: var(--accent);
+            color: white;
+        }
+        .btn-accent:hover {
+            background: #fc6b9d;
+        }
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #c0392b;
+        }
         .loading {
             display: none;
             text-align: center;
-            margin: 20px 0;
-        }
-        
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid rgba(106, 17, 203, 0.2);
-            border-radius: 50%;
-            border-top-color: var(--primary);
-            margin: 0 auto;
-            animation: spin 1s linear infinite;
-        }
-        
-        .loading-text {
-            margin-top: 15px;
-            color: var(--dark);
-            font-weight: 500;
-        }
-        
-        .error {
-            color: #ff4d4d;
-            text-align: center;
-            margin-top: 20px;
-            display: none;
-            font-weight: 500;
-        }
-        
-        .how-to-use {
-            margin-top: 30px;
             padding: 20px;
-            background: rgba(248, 249, 250, 0.7);
-            border-radius: 15px;
         }
-        
-        .how-to-use h3 {
-            color: var(--primary);
-            margin-bottom: 15px;
-            text-align: center;
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary);
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
         }
-        
-        .steps {
-            list-style-type: none;
-        }
-        
-        .steps li {
-            margin-bottom: 10px;
-            padding-left: 25px;
-            position: relative;
-        }
-        
-        .steps li:before {
-            content: "→";
-            position: absolute;
-            left: 0;
-            color: var(--secondary);
-            font-weight: bold;
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 30px;
-            color: rgba(0, 0, 0, 0.6);
-            font-size: 0.9rem;
-        }
-        
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-        
+        .result {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
-        /* Responsive */
+        .thumbnail {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #eee;
+        }
+        .video-info {
+            margin-bottom: 15px;
+        }
+        .video-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .video-author {
+            color: #666;
+            font-size: 0.9em;
+        }
+        .download-options {
+            display: grid;
+            gap: 10px;
+        }
+        .download-btn {
+            display: flex;
+            align-items: center;
+            background: var(--success);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            gap: 10px;
+        }
+        .download-btn:hover {
+            background: #00997b;
+            transform: translateX(5px);
+        }
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+            border-top: 1px solid #eee;
+            margin-top: 50px;
+        }
         @media (max-width: 768px) {
-            .container {
-                border-radius: 15px;
+            .services {
+                grid-template-columns: 1fr;
             }
-            
-            .header {
-                padding: 20px;
-            }
-            
-            .logo {
-                font-size: 2rem;
-            }
-            
-            .content {
-                padding: 20px;
-            }
-            
-            .input-group {
+            .btn-group {
                 flex-direction: column;
-                border-radius: 15px;
             }
-            
-            .url-input {
-                border-radius: 15px 15px 0 0;
-            }
-            
-            .download-btn {
-                border-radius: 0 0 15px 15px;
-                padding: 15px;
+            h1 {
+                font-size: 2em;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <div class="logo">
-                <i class="fab fa-tiktok"></i>
-                <span>SemzDownloader</span>
+        <header>
+            <div class="logo">SEMZDOWNLOADER</div>
+            <h1>Download Video & MP3 Gratis</h1>
+            <p class="description">Unduh video dari TikTok, YouTube, Instagram dengan mudah dan cepat dalam berbagai kualitas</p>
+        </header>
+
+        <div class="services">
+            <!-- TikTok Downloader -->
+            <div class="service">
+                <h2><div class="service-icon"><i class="fab fa-tiktok"></i></div> TikTok Downloader</h2>
+                <p>Download video TikTok tanpa watermark dengan kualitas HD. Juga bisa ekstrak audio menjadi MP3.</p>
+                <div class="input-group">
+                    <input type="text" id="tiktok-url" placeholder="https://www.tiktok.com/@username/video/123456789...">
+                </div>
+                <div class="btn-group">
+                    <button class="btn-primary" onclick="downloadTiktok()"><i class="fas fa-download"></i> Download Video</button>
+                    <button class="btn-accent" onclick="downloadTiktokMp3()"><i class="fas fa-music"></i> MP3</button>
+                </div>
+                <div class="loading" id="tiktok-loading">
+                    <div class="spinner"></div>
+                    <p>Memproses video TikTok...</p>
+                </div>
+                <div class="result" id="tiktok-result">
+                    <img src="" class="thumbnail" id="tiktok-thumbnail">
+                    <div class="video-info">
+                        <div class="video-title" id="tiktok-title"></div>
+                        <div class="video-author" id="tiktok-author"></div>
+                    </div>
+                    <div class="download-options" id="tiktok-output"></div>
+                </div>
             </div>
-            <p class="subtitle">Download TikTok videos without watermark</p>
+
+            <!-- YouTube Downloader -->
+            <div class="service">
+                <h2><div class="service-icon"><i class="fab fa-youtube"></i></div> YouTube Downloader</h2>
+                <p>Download video YouTube dalam berbagai resolusi. Juga bisa konversi ke format MP3.</p>
+                <div class="input-group">
+                    <input type="text" id="youtube-url" placeholder="https://www.youtube.com/watch?v=...">
+                </div>
+                <div class="btn-group">
+                    <button class="btn-primary" onclick="downloadYoutube()"><i class="fas fa-download"></i> Download Video</button>
+                    <button class="btn-accent" onclick="downloadYoutubeMp3()"><i class="fas fa-music"></i> MP3</button>
+                </div>
+                <div class="loading" id="youtube-loading">
+                    <div class="spinner"></div>
+                    <p>Memproses video YouTube...</p>
+                </div>
+                <div class="result" id="youtube-result">
+                    <img src="" class="thumbnail" id="youtube-thumbnail">
+                    <div class="video-info">
+                        <div class="video-title" id="youtube-title"></div>
+                        <div class="video-author" id="youtube-author"></div>
+                    </div>
+                    <div class="download-options" id="youtube-output"></div>
+                </div>
+            </div>
+
+            <!-- Instagram Downloader -->
+            <div class="service">
+                <h2><div class="service-icon"><i class="fab fa-instagram"></i></div> Instagram Downloader</h2>
+                <p>Download video, foto, IGTV, dan Reels dari Instagram dengan kualitas tinggi.</p>
+                <div class="input-group">
+                    <input type="text" id="instagram-url" placeholder="https://www.instagram.com/p/...">
+                </div>
+                <div class="btn-group">
+                    <button class="btn-primary" onclick="downloadInstagram()"><i class="fas fa-download"></i> Download</button>
+                    <button class="btn-danger" onclick="clearForm('instagram')"><i class="fas fa-times"></i> Reset</button>
+                </div>
+                <div class="loading" id="instagram-loading">
+                    <div class="spinner"></div>
+                    <p>Memproses konten Instagram...</p>
+                </div>
+                <div class="result" id="instagram-result">
+                    <img src="" class="thumbnail" id="instagram-thumbnail">
+                    <div class="video-info">
+                        <div class="video-title" id="instagram-title"></div>
+                        <div class="video-author" id="instagram-author"></div>
+                    </div>
+                    <div class="download-options" id="instagram-output"></div>
+                </div>
+            </div>
+
+            <!-- How to Use -->
+            <div class="service">
+                <h2><div class="service-icon"><i class="fas fa-question-circle"></i></div> Cara Menggunakan</h2>
+                <ol style="padding-left: 20px; margin-bottom: 20px;">
+                    <li style="margin-bottom: 10px;">Buka aplikasi TikTok/YouTube/Instagram</li>
+                    <li style="margin-bottom: 10px;">Pilih video yang ingin didownload</li>
+                    <li style="margin-bottom: 10px;">Klik tombol "Share" lalu "Copy Link"</li>
+                    <li style="margin-bottom: 10px;">Tempelkan link di kolom input SemzDownloader</li>
+                    <li style="margin-bottom: 10px;">Klik tombol download sesuai kebutuhan</li>
+                    <li style="margin-bottom: 10px;">Tunggu proses selesai dan download file Anda</li>
+                </ol>
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 10px;">
+                    <h3 style="margin-top: 0; color: var(--primary);"><i class="fas fa-exclamation-circle"></i> Penting!</h3>
+                    <p style="margin-bottom: 0;">Gunakan hanya untuk konten publik. Kami tidak mendukung download konten privat atau melanggar hak cipta.</p>
+                </div>
+            </div>
         </div>
-        
-        <div class="content">
-            <div class="input-group">
-                <input type="text" class="url-input" id="tiktok-url" placeholder="Paste TikTok video URL here...">
-                <button class="download-btn" id="download-btn">Download</button>
-            </div>
-            
-            <div class="loading" id="loading">
-                <div class="spinner"></div>
-                <p class="loading-text">Processing your video...</p>
-            </div>
-            
-            <div class="error" id="error">
-                Invalid TikTok URL. Please check and try again.
-            </div>
-            
-            <div class="result-container" id="result-container">
-                <video controls class="video-preview" id="video-preview"></video>
-                <a href="#" class="download-link" id="download-link" download>
-                    <i class="fas fa-download"></i> Download Video
-                </a>
-            </div>
-            
-            <div class="how-to-use">
-                <h3>How to use</h3>
-                <ul class="steps">
-                    <li>Copy the link of the TikTok video you want to download</li>
-                    <li>Paste the URL in the input field above</li>
-                    <li>Click the "Download" button</li>
-                    <li>Wait for processing and download your watermark-free video</li>
-                </ul>
-            </div>
-        </div>
-        
+
         <footer>
-            <p>SemzDownloader &copy; 2023 | All Rights Reserved</p>
+            <p>&copy; 2023 SemzDownloader. All rights reserved.</p>
+            <p>Layanan ini tidak berafiliasi dengan TikTok, YouTube, atau Instagram.</p>
         </footer>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const downloadBtn = document.getElementById('download-btn');
-            const tiktokUrlInput = document.getElementById('tiktok-url');
-            const loadingElement = document.getElementById('loading');
-            const resultContainer = document.getElementById('result-container');
-            const videoPreview = document.getElementById('video-preview');
-            const downloadLink = document.getElementById('download-link');
-            const errorElement = document.getElementById('error');
+        // API Endpoints (gunakan layanan pihak ketiga)
+        const API = {
+            tiktok: {
+                video: 'https://www.tikwm.com/api/?url=',
+                music: 'https://www.tikwm.com/api/?url='
+            },
+            youtube: {
+                video: 'https://youtube-video-download-info.p.rapidapi.com/dl?id=',
+                music: 'https://youtube-mp36.p.rapidapi.com/dl?id='
+            },
+            instagram: {
+                post: 'https://instagram-post-reels-stories-downloader.p.rapidapi.com/instagram/?url='
+            }
+        };
+
+        // Fungsi untuk menampilkan loading
+        function showLoading(platform) {
+            document.getElementById(`${platform}-loading`).style.display = 'block';
+            document.getElementById(`${platform}-result`).style.display = 'none';
+        }
+        
+        // Fungsi untuk menyembunyikan loading
+        function hideLoading(platform) {
+            document.getElementById(`${platform}-loading`).style.display = 'none';
+        }
+        
+        // Fungsi untuk menampilkan hasil
+        function showResult(platform, data) {
+            const resultDiv = document.getElementById(`${platform}-result`);
+            const outputDiv = document.getElementById(`${platform}-output`);
             
-            downloadBtn.addEventListener('click', function() {
-                const tiktokUrl = tiktokUrlInput.value.trim();
-                
-                // Validate URL
-                if (!tiktokUrl || !tiktokUrl.includes('tiktok.com')) {
-                    showError();
-                    return;
-                }
-                
-                // Show loading, hide other elements
-                loadingElement.style.display = 'block';
-                resultContainer.style.display = 'none';
-                errorElement.style.display = 'none';
-                
-                // Use TikWM API to get video without watermark
-                fetch(`https://tikwm.com/api/?url=${encodeURIComponent(tiktokUrl)}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.code === 0 && data.data && data.data.play) {
-                            // Success - show video and download link
-                            const videoUrl = data.data.play;
-                            videoPreview.src = videoUrl;
-                            downloadLink.href = videoUrl;
-                            
-                            // Set download filename
-                            const now = new Date();
-                            const timestamp = now.toISOString().replace(/[:.]/g, '-');
-                            downloadLink.setAttribute('download', `tiktok-${timestamp}.mp4`);
-                            
-                            loadingElement.style.display = 'none';
-                            resultContainer.style.display = 'block';
-                        } else {
-                            showError();
-                        }
-                    })
-                    .catch(err => {
-                        console.error('Error:', err);
-                        showError();
-                    });
-            });
-            
-            function showError() {
-                loadingElement.style.display = 'none';
-                resultContainer.style.display = 'none';
-                errorElement.style.display = 'block';
-                
-                // Shake animation for error
-                errorElement.style.animation = 'none';
-                void errorElement.offsetWidth; // Trigger reflow
-                errorElement.style.animation = 'fadeIn 0.5s ease';
-                
-                // Clear input and focus
-                tiktokUrlInput.value = '';
-                tiktokUrlInput.focus();
+            // Set thumbnail jika ada
+            if (data.thumbnail) {
+                const thumbnail = document.getElementById(`${platform}-thumbnail`);
+                thumbnail.src = data.thumbnail;
+                thumbnail.style.display = 'block';
             }
             
-            // Clear error when user starts typing
-            tiktokUrlInput.addEventListener('input', function() {
-                errorElement.style.display = 'none';
-            });
-        });
+            // Set judul jika ada
+            if (data.title) {
+                document.getElementById(`${platform}-title`).textContent = data.title;
+            }
+            
+            // Set author jika ada
+            if (data.author) {
+                document.getElementById(`${platform}-author`).textContent = `By ${data.author}`;
+            }
+            
+            // Generate download options
+            outputDiv.innerHTML = '';
+            if (data.downloadOptions && data.downloadOptions.length > 0) {
+                data.downloadOptions.forEach(option => {
+                    const btn = document.createElement('a');
+                    btn.href = option.url;
+                    btn.className = 'download-btn';
+                    btn.innerHTML = `<i class="fas ${option.icon}"></i> ${option.label}`;
+                    btn.download = true;
+                    btn.target = '_blank';
+                    outputDiv.appendChild(btn);
+                });
+            } else {
+                outputDiv.innerHTML = '<p>Tidak ada opsi download yang tersedia.</p>';
+            }
+            
+            resultDiv.style.display = 'block';
+        }
+        
+        // Fungsi untuk clear form
+        function clearForm(platform) {
+            document.getElementById(`${platform}-url`).value = '';
+            document.getElementById(`${platform}-result`).style.display = 'none';
+            document.getElementById(`${platform}-loading`).style.display = 'none';
+            
+            // Clear thumbnail jika ada
+            const thumbnail = document.getElementById(`${platform}-thumbnail`);
+            if (thumbnail) {
+                thumbnail.src = '';
+                thumbnail.style.display = 'none';
+            }
+        }
+        
+        // Fungsi untuk mengekstrak ID video YouTube dari URL
+        function getYouTubeId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+        
+        // Fungsi untuk memvalidasi URL
+        function isValidUrl(url, platform) {
+            const patterns = {
+                tiktok: /tiktok\.com/i,
+                youtube: /youtube\.com|youtu\.be/i,
+                instagram: /instagram\.com/i
+            };
+            return patterns[platform].test(url);
+        }
+        
+        // Fungsi untuk menangani error
+        function handleError(platform, message) {
+            hideLoading(platform);
+            alert(message || 'Terjadi kesalahan. Silakan coba lagi.');
+        }
+        
+        // Fungsi download TikTok Video
+        async function downloadTiktok() {
+            const url = document.getElementById('tiktok-url').value.trim();
+            if (!url || !isValidUrl(url, 'tiktok')) {
+                alert('Masukkan URL video TikTok yang valid');
+                return;
+            }
+            
+            showLoading('tiktok');
+            
+            try {
+                // Menggunakan API pihak ketiga (contoh)
+                const apiUrl = `${API.tiktok.video}${encodeURIComponent(url)}`;
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                if (data.code === 0 && data.data) {
+                    const result = {
+                        thumbnail: data.data.cover,
+                        title: data.data.title,
+                        author: data.data.author.nickname,
+                        downloadOptions: [
+                            { icon: 'fa-video', label: 'Video No Watermark', url: data.data.play },
+                            { icon: 'fa-video', label: 'Video With Watermark', url: data.data.wmplay }
+                        ]
+                    };
+                    showResult('tiktok', result);
+                } else {
+                    handleError('tiktok', 'Gagal mendapatkan data video');
+                }
+            } catch (error) {
+                handleError('tiktok', error.message);
+            }
+        }
+        
+        // Fungsi download TikTok MP3
+        async function downloadTiktokMp3() {
+            const url = document.getElementById('tiktok-url').value.trim();
+            if (!url || !isValidUrl(url, 'tiktok')) {
+                alert('Masukkan URL video TikTok yang valid');
+                return;
+            }
+            
+            showLoading('tiktok');
+            
+            try {
+                // Menggunakan API pihak ketiga (contoh)
+                const apiUrl = `${API.tiktok.music}${encodeURIComponent(url)}`;
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                if (data.code === 0 && data.data) {
+                    const result = {
+                        thumbnail: data.data.cover,
+                        title: data.data.title,
+                        author: data.data.author.nickname,
+                        downloadOptions: [
+                            { icon: 'fa-music', label: 'MP3 Audio', url: data.data.music }
+                        ]
+                    };
+                    showResult('tiktok', result);
+                } else {
+                    handleError('tiktok', 'Gagal mendapatkan data audio');
+                }
+            } catch (error) {
+                handleError('tiktok', error.message);
+            }
+        }
+        
+        // Fungsi download YouTube Video
+        async function downloadYoutube() {
+            const url = document.getElementById('youtube-url').value.trim();
+            if (!url || !isValidUrl(url, 'youtube')) {
+                alert('Masukkan URL video YouTube yang valid');
+                return;
+            }
+            
+            const videoId = getYouTubeId(url);
+            if (!videoId) {
+                alert('URL YouTube tidak valid');
+                return;
+            }
+            
+            showLoading('youtube');
+            
+            try {
+                // Menggunakan API pihak ketiga (contoh)
+                const apiUrl = `${API.youtube.video}${videoId}`;
+                const response = await fetch(apiUrl, {
+                    headers: {
+                        'X-RapidAPI-Key': 'your-api-key', // Ganti dengan API key Anda
+                        'X-RapidAPI-Host': 'youtube-video-download-info.p.rapidapi.com'
+                    }
+                });
+                const data = await response.json();
+                
+                if (data.status === 'ok' && data.link) {
+                    const result = {
+                        thumbnail: data.thumb,
+                        title: data.title,
+                        author: data.a,
+                        downloadOptions: data.link.map((item, index) => ({
+                            icon: 'fa-video',
+                            label: `${item.q} (${item.size})`,
+                            url: item.link
+                        }))
+                    };
+                    showResult('youtube', result);
+                } else {
+                    handleError('youtube', 'Gagal mendapatkan data video');
+                }
+            } catch (error) {
+                handleError('youtube', error.message);
+            }
+        }
+        
+        // Fungsi download YouTube MP3
+        async function downloadYoutubeMp3() {
+            const url = document.getElementById('youtube-url').value.trim();
+            if (!url || !isValidUrl(url, 'youtube')) {
+                alert('Masukkan URL video YouTube yang valid');
+                return;
+            }
+            
+            const videoId = getYouTubeId(url);
+            if (!videoId) {
+                alert('URL YouTube tidak valid');
+                return;
+            }
+            
+            showLoading('youtube');
+            
+            try {
+                // Menggunakan API pihak ketiga (contoh)
+                const apiUrl = `${API.youtube.music}${videoId}`;
+                const response = await fetch(apiUrl, {
+                    headers: {
+                        'X-RapidAPI-Key': 'your-api-key', // Ganti dengan API key Anda
+                        'X-RapidAPI-Host': 'youtube-mp36.p.rapidapi.com'
+                    }
+                });
+                const data = await response.json();
+                
+                if (data.status === 'ok') {
+                    const result = {
+                        thumbnail: `https://img.youtube.com/vi/${videoId}/0.jpg`,
+                        title: data.title,
+                        author: 'YouTube',
+                        downloadOptions: [
+                            { icon: 'fa-music', label: 'MP3 Audio', url: data.link }
+                        ]
+                    };
+                    showResult('youtube', result);
+                } else {
+                    handleError('youtube', data.msg || 'Gagal mendapatkan data audio');
+                }
+            } catch (error) {
+                handleError('youtube', error.message);
+            }
+        }
+        
+        // Fungsi download Instagram
+        async function downloadInstagram() {
+            const url = document.getElementById('instagram-url').value.trim();
+            if (!url || !isValidUrl(url, 'instagram')) {
+                alert('Masukkan URL post Instagram yang valid');
+                return;
+            }
+            
+            showLoading('instagram');
+            
+            try {
+                // Menggunakan API pihak ketiga (contoh)
+                const apiUrl = `${API.instagram.post}${encodeURIComponent(url)}`;
+                const response = await fetch(apiUrl, {
+                    headers: {
+                        'X-RapidAPI-Key': 'your-api-key', // Ganti dengan API key Anda
+                        'X-RapidAPI-Host': 'instagram-post-reels-stories-downloader.p.rapidapi.com'
+                    }
+                });
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    const result = {
+                        thumbnail: data.thumbnail,
+                        title: data.caption || 'Instagram Post',
+                        author: data.username,
+                        downloadOptions: data.media.map((item, index) => ({
+                            icon: item.type === 'image' ? 'fa-image' : 'fa-video',
+                            label: item.type === 'image' ? 'Download Foto' : 'Download Video',
+                            url: item.url
+                        }))
+                    };
+                    showResult('instagram', result);
+                } else {
+                    handleError('instagram', 'Gagal mendapatkan data post');
+                }
+            } catch (error) {
+                handleError('instagram', error.message);
+            }
+        }
+    </script>
+</body>
+    </html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SemzDownloader - Download TikTok, YouTube, Instagram</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6C5CE7;
+            --secondary: #A29BFE;
+            --accent: #FD79A8;
+            --dark: #2D3436;
+            --light: #F5F6FA;
+            --success: #00B894;
+            --danger: #D63031;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 20px rgba(108, 92, 231, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(255,255,255,0.05)" d="M0,0 L100,0 L100,100 Q50,80 0,100 Z"></path></svg>');
+            background-size: 100% 100%;
+            pointer-events: none;
+        }
+        .logo {
+            font-weight: 800;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 50px;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .description {
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        .service {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+        .service:hover {
+            transform: translateY(-5px);
+        }
+        .service h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .service-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+        }
+        .input-group {
+            margin: 20px 0;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+        input[type="text"]:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #5a4bd1;
+        }
+        .btn-accent {
+            background: var(--accent);
+            color: white;
+        }
+        .btn-accent:hover {
+            background: #fc6b9d;
+        }
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary);
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .result {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .thumbnail {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #eee;
+        }
+        .video-info {
+            margin-bottom: 15px;
+        }
+        .video-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .video-author {
+            color: #666;
+            font-size: 0.9em;
+        }
+        .download-options {
+            display: grid;
+            gap: 10px;
+        }
+        .download-btn {
+            display: flex;
+            align-items: center;
+            background: var(--success);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            gap: 10px;
+        }
+        .download-btn:hover {
+            background: #00997b;
+            transform: translateX(5px);
+        }
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+            border-top: 1px solid #eee;
+            margin-top: 50px;
+        }
+        @media (max-width: 768px) {
+            .services {
+                grid-template-columns: 1fr;
+            }
+            .btn-group {
+                flex-direction: column;
+            }
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">SEMZDOWNLOADER</div>
+            <h1>Download Video & MP3 Gratis</h1>
+            <p class="description">Unduh video dari TikTok, YouTube, Instagram dengan mudah dan cepat dalam berbagai kualitas</p>
+        </header>
+
+        <div class="services">
+            <!-- TikTok Downloader -->
+            <div class="service">
+                <h2><div class="service-icon"><i class="fab fa-tiktok"></i></div> TikTok Downloader</h2>
+                <p>Download video TikTok tanpa watermark dengan kualitas HD. Juga bisa ekstrak audio menjadi MP3.</p>
+                <div class="input-group">
+                    <input type="text" id="tiktok-url" placeholder="https://www.tiktok.com/@username/video/123456789...">
+                </div>
+                <div class="btn-group">
+                    <button class="btn-primary" onclick="downloadTiktok()"><i class="fas fa-download"></i> Download Video</button>
+                    <button class="btn-accent" onclick="downloadTiktokMp3()"><i class="fas fa-music"></i> MP3</button>
+                </div>
+                <div class="loading" id="tiktok-loading">
+                    <div class="spinner"></div>
+                    <p>Memproses video TikTok...</p>
+                </div>
+                <div class="result" id="tiktok-result">
+                    <img src="" class="thumbnail" id="tiktok-thumbnail">
+                    <div class="video-info">
+                        <div class="video-title" id="tiktok-title"></div>
+                        <div class="video-author" id="tiktok-author"></div>
+                    </div>
+                    <div class="download-options" id="tiktok-output"></div>
+                </div>
+            </div>
+
+            <!-- YouTube Downloader -->
+            <div class="service">
+                <h2><div class="service-icon"><i class="fab fa-youtube"></i></div> YouTube Downloader</h2>
+                <p>Download video YouTube dalam berbagai resolusi. Juga bisa konversi ke format MP3.</p>
+                <div class="input-group">
+                    <input type="text" id="youtube-url" placeholder="https://www.youtube.com/watch?v=...">
+                </div>
+                <div class="btn-group">
+                    <button class="btn-primary" onclick="downloadYoutube()"><i class="fas fa-download"></i> Download Video</button>
+                    <button class="btn-accent" onclick="downloadYoutubeMp3()"><i class="fas fa-music"></i> MP3</button>
+                </div>
+                <div class="loading" id="youtube-loading">
+                    <div class="spinner"></div>
+                    <p>Memproses video YouTube...</p>
+                </div>
+                <div class="result" id="youtube-result">
+                    <img src="" class="thumbnail" id="youtube-thumbnail">
+                    <div class="video-info">
+                        <div class="video-title" id="youtube-title"></div>
+                        <div class="video-author" id="youtube-author"></div>
+                    </div>
+                    <div class="download-options" id="youtube-output"></div>
+                </div>
+            </div>
+
+            <!-- Instagram Downloader -->
+            <div class="service">
+                <h2><div class="service-icon"><i class="fab fa-instagram"></i></div> Instagram Downloader</h2>
+                <p>Download video, foto, IGTV, dan Reels dari Instagram dengan kualitas tinggi.</p>
+                <div class="input-group">
+                    <input type="text" id="instagram-url" placeholder="https://www.instagram.com/p/...">
+                </div>
+                <div class="btn-group">
+                    <button class="btn-primary" onclick="downloadInstagram()"><i class="fas fa-download"></i> Download</button>
+                    <button class="btn-danger" onclick="clearForm('instagram')"><i class="fas fa-times"></i> Reset</button>
+                </div>
+                <div class="loading" id="instagram-loading">
+                    <div class="spinner"></div>
+                    <p>Memproses konten Instagram...</p>
+                </div>
+                <div class="result" id="instagram-result">
+                    <img src="" class="thumbnail" id="instagram-thumbnail">
+                    <div class="video-info">
+                        <div class="video-title" id="instagram-title"></div>
+                        <div class="video-author" id="instagram-author"></div>
+                    </div>
+                    <div class="download-options" id="instagram-output"></div>
+                </div>
+            </div>
+
+            <!-- How to Use -->
+            <div class="service">
+                <h2><div class="service-icon"><i class="fas fa-question-circle"></i></div> Cara Menggunakan</h2>
+                <ol style="padding-left: 20px; margin-bottom: 20px;">
+                    <li style="margin-bottom: 10px;">Buka aplikasi TikTok/YouTube/Instagram</li>
+                    <li style="margin-bottom: 10px;">Pilih video yang ingin didownload</li>
+                    <li style="margin-bottom: 10px;">Klik tombol "Share" lalu "Copy Link"</li>
+                    <li style="margin-bottom: 10px;">Tempelkan link di kolom input SemzDownloader</li>
+                    <li style="margin-bottom: 10px;">Klik tombol download sesuai kebutuhan</li>
+                    <li style="margin-bottom: 10px;">Tunggu proses selesai dan download file Anda</li>
+                </ol>
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 10px;">
+                    <h3 style="margin-top: 0; color: var(--primary);"><i class="fas fa-exclamation-circle"></i> Penting!</h3>
+                    <p style="margin-bottom: 0;">Gunakan hanya untuk konten publik. Kami tidak mendukung download konten privat atau melanggar hak cipta.</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2023 SemzDownloader. All rights reserved.</p>
+            <p>Layanan ini tidak berafiliasi dengan TikTok, YouTube, atau Instagram.</p>
+        </footer>
+    </div>
+
+    <script>
+        // API Endpoints (gunakan layanan pihak ketiga)
+        const API = {
+            tiktok: {
+                video: 'https://www.tikwm.com/api/?url=',
+                music: 'https://www.tikwm.com/api/?url='
+            },
+            youtube: {
+                video: 'https://youtube-video-download-info.p.rapidapi.com/dl?id=',
+                music: 'https://youtube-mp36.p.rapidapi.com/dl?id='
+            },
+            instagram: {
+                post: 'https://instagram-post-reels-stories-downloader.p.rapidapi.com/instagram/?url='
+            }
+        };
+
+        // Fungsi untuk menampilkan loading
+        function showLoading(platform) {
+            document.getElementById(`${platform}-loading`).style.display = 'block';
+            document.getElementById(`${platform}-result`).style.display = 'none';
+        }
+        
+        // Fungsi untuk menyembunyikan loading
+        function hideLoading(platform) {
+            document.getElementById(`${platform}-loading`).style.display = 'none';
+        }
+        
+        // Fungsi untuk menampilkan hasil
+        function showResult(platform, data) {
+            const resultDiv = document.getElementById(`${platform}-result`);
+            const outputDiv = document.getElementById(`${platform}-output`);
+            
+            // Set thumbnail jika ada
+            if (data.thumbnail) {
+                const thumbnail = document.getElementById(`${platform}-thumbnail`);
+                thumbnail.src = data.thumbnail;
+                thumbnail.style.display = 'block';
+            }
+            
+            // Set judul jika ada
+            if (data.title) {
+                document.getElementById(`${platform}-title`).textContent = data.title;
+            }
+            
+            // Set author jika ada
+            if (data.author) {
+                document.getElementById(`${platform}-author`).textContent = `By ${data.author}`;
+            }
+            
+            // Generate download options
+            outputDiv.innerHTML = '';
+            if (data.downloadOptions && data.downloadOptions.length > 0) {
+                data.downloadOptions.forEach(option => {
+                    const btn = document.createElement('a');
+                    btn.href = option.url;
+                    btn.className = 'download-btn';
+                    btn.innerHTML = `<i class="fas ${option.icon}"></i> ${option.label}`;
+                    btn.download = true;
+                    btn.target = '_blank';
+                    outputDiv.appendChild(btn);
+                });
+            } else {
+                outputDiv.innerHTML = '<p>Tidak ada opsi download yang tersedia.</p>';
+            }
+            
+            resultDiv.style.display = 'block';
+        }
+        
+        // Fungsi untuk clear form
+        function clearForm(platform) {
+            document.getElementById(`${platform}-url`).value = '';
+            document.getElementById(`${platform}-result`).style.display = 'none';
+            document.getElementById(`${platform}-loading`).style.display = 'none';
+            
+            // Clear thumbnail jika ada
+            const thumbnail = document.getElementById(`${platform}-thumbnail`);
+            if (thumbnail) {
+                thumbnail.src = '';
+                thumbnail.style.display = 'none';
+            }
+        }
+        
+        // Fungsi untuk mengekstrak ID video YouTube dari URL
+        function getYouTubeId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+        
+        // Fungsi untuk memvalidasi URL
+        function isValidUrl(url, platform) {
+            const patterns = {
+                tiktok: /tiktok\.com/i,
+                youtube: /youtube\.com|youtu\.be/i,
+                instagram: /instagram\.com/i
+            };
+            return patterns[platform].test(url);
+        }
+        
+        // Fungsi untuk menangani error
+        function handleError(platform, message) {
+            hideLoading(platform);
+            alert(message || 'Terjadi kesalahan. Silakan coba lagi.');
+        }
+        
+        // Fungsi download TikTok Video
+        async function downloadTiktok() {
+            const url = document.getElementById('tiktok-url').value.trim();
+            if (!url || !isValidUrl(url, 'tiktok')) {
+                alert('Masukkan URL video TikTok yang valid');
+                return;
+            }
+            
+            showLoading('tiktok');
+            
+            try {
+                // Menggunakan API pihak ketiga (contoh)
+                const apiUrl = `${API.tiktok.video}${encodeURIComponent(url)}`;
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                if (data.code === 0 && data.data) {
+                    const result = {
+                        thumbnail: data.data.cover,
+                        title: data.data.title,
+                        author: data.data.author.nickname,
+                        downloadOptions: [
+                            { icon: 'fa-video', label: 'Video No Watermark', url: data.data.play },
+                            { icon: 'fa-video', label: 'Video With Watermark', url: data.data.wmplay }
+                        ]
+                    };
+                    showResult('tiktok', result);
+                } else {
+                    handleError('tiktok', 'Gagal mendapatkan data video');
+                }
+            } catch (error) {
+                handleError('tiktok', error.message);
+            }
+        }
+        
+        // Fungsi download TikTok MP3
+        async function downloadTiktokMp3() {
+            const url = document.getElementById('tiktok-url').value.trim();
+            if (!url || !isValidUrl(url, 'tiktok')) {
+                alert('Masukkan URL video TikTok yang valid');
+                return;
+            }
+            
+            showLoading('tiktok');
+            
+            try {
+                // Menggunakan API pihak ketiga (contoh)
+                const apiUrl = `${API.tiktok.music}${encodeURIComponent(url)}`;
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                if (data.code === 0 && data.data) {
+                    const result = {
+                        thumbnail: data.data.cover,
+                        title: data.data.title,
+                        author: data.data.author.nickname,
+                        downloadOptions: [
+                            { icon: 'fa-music', label: 'MP3 Audio', url: data.data.music }
+                        ]
+                    };
+                    showResult('tiktok', result);
+                } else {
+                    handleError('tiktok', 'Gagal mendapatkan data audio');
+                }
+            } catch (error) {
+                handleError('tiktok', error.message);
+            }
+        }
+        
+        // Fungsi download YouTube Video
+        async function downloadYoutube() {
+            const url = document.getElementById('youtube-url').value.trim();
+            if (!url || !isValidUrl(url, 'youtube')) {
+                alert('Masukkan URL video YouTube yang valid');
+                return;
+            }
+            
+            const videoId = getYouTubeId(url);
+            if (!videoId) {
+                alert('URL YouTube tidak valid');
+                return;
+            }
+            
+            showLoading('youtube');
+            
+            try {
+                // Menggunakan API pihak ketiga (contoh)
+                const apiUrl = `${API.youtube.video}${videoId}`;
+                const response = await fetch(apiUrl, {
+                    headers: {
+                        'X-RapidAPI-Key': 'your-api-key', // Ganti dengan API key Anda
+                        'X-RapidAPI-Host': 'youtube-video-download-info.p.rapidapi.com'
+                    }
+                });
+                const data = await response.json();
+                
+                if (data.status === 'ok' && data.link) {
+                    const result = {
+                        thumbnail: data.thumb,
+                        title: data.title,
+                        author: data.a,
+                        downloadOptions: data.link.map((item, index) => ({
+                            icon: 'fa-video',
+                            label: `${item.q} (${item.size})`,
+                            url: item.link
+                        }))
+                    };
+                    showResult('youtube', result);
+                } else {
+                    handleError('youtube', 'Gagal mendapatkan data video');
+                }
+            } catch (error) {
+                handleError('youtube', error.message);
+            }
+        }
+        
+        // Fungsi download YouTube MP3
+        async function downloadYoutubeMp3() {
+            const url = document.getElementById('youtube-url').value.trim();
+            if (!url || !isValidUrl(url, 'youtube')) {
+                alert('Masukkan URL video YouTube yang valid');
+                return;
+            }
+            
+            const videoId = getYouTubeId(url);
+            if (!videoId) {
+                alert('URL YouTube tidak valid');
+                return;
+            }
+            
+            showLoading('youtube');
+            
+            try {
+                // Menggunakan API pihak ketiga (contoh)
+                const apiUrl = `${API.youtube.music}${videoId}`;
+                const response = await fetch(apiUrl, {
+                    headers: {
+                        'X-RapidAPI-Key': 'your-api-key', // Ganti dengan API key Anda
+                        'X-RapidAPI-Host': 'youtube-mp36.p.rapidapi.com'
+                    }
+                });
+                const data = await response.json();
+                
+                if (data.status === 'ok') {
+                    const result = {
+                        thumbnail: `https://img.youtube.com/vi/${videoId}/0.jpg`,
+                        title: data.title,
+                        author: 'YouTube',
+                        downloadOptions: [
+                            { icon: 'fa-music', label: 'MP3 Audio', url: data.link }
+                        ]
+                    };
+                    showResult('youtube', result);
+                } else {
+                    handleError('youtube', data.msg || 'Gagal mendapatkan data audio');
+                }
+            } catch (error) {
+                handleError('youtube', error.message);
+            }
+        }
+        
+        // Fungsi download Instagram
+        async function downloadInstagram() {
+            const url = document.getElementById('instagram-url').value.trim();
+            if (!url || !isValidUrl(url, 'instagram')) {
+                alert('Masukkan URL post Instagram yang valid');
+                return;
+            }
+            
+            showLoading('instagram');
+            
+            try {
+                // Menggunakan API pihak ketiga (contoh)
+                const apiUrl = `${API.instagram.post}${encodeURIComponent(url)}`;
+                const response = await fetch(apiUrl, {
+                    headers: {
+                        'X-RapidAPI-Key': 'your-api-key', // Ganti dengan API key Anda
+                        'X-RapidAPI-Host': 'instagram-post-reels-stories-downloader.p.rapidapi.com'
+                    }
+                });
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    const result = {
+                        thumbnail: data.thumbnail,
+                        title: data.caption || 'Instagram Post',
+                        author: data.username,
+                        downloadOptions: data.media.map((item, index) => ({
+                            icon: item.type === 'image' ? 'fa-image' : 'fa-video',
+                            label: item.type === 'image' ? 'Download Foto' : 'Download Video',
+                            url: item.url
+                        }))
+                    };
+                    showResult('instagram', result);
+                } else {
+                    handleError('instagram', 'Gagal mendapatkan data post');
+                }
+            } catch (error) {
+                handleError('instagram', error.message);
+            }
+        }
     </script>
 </body>
 </html>
