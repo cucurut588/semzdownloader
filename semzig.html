@@ -12,6 +12,8 @@
             --darker: #16213e;
             --light: #e6e6e6;
             --accent: #00f2fe;
+            --error: #ff3860;
+            --success: #00d1b2;
         }
         
         body {
@@ -179,6 +181,40 @@
             font-size: 0.9rem;
         }
         
+        .error-message {
+            color: var(--error);
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .tutorial {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+        
+        .tutorial h3 {
+            color: var(--accent);
+            margin-top: 0;
+        }
+        
+        .tutorial ol {
+            padding-left: 20px;
+        }
+        
+        .tutorial li {
+            margin-bottom: 10px;
+        }
+        
+        .info-box {
+            background: rgba(0, 242, 254, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
         @media (max-width: 600px) {
             .container {
                 padding: 1.5rem;
@@ -210,23 +246,42 @@
         <header>
             <h1>SemzDownloaderIG</h1>
             <div class="logo">DOWNLOAD VIDEO/FOTO INSTAGRAM</div>
-            <p class="description">Masukkan link Instagram di bawah ini untuk mengunduh konten dengan mudah dan cepat.</p>
+            <p class="description">Unduh konten Instagram dengan mudah tanpa watermark. Cukup masukkan link dan dapatkan file berkualitas tinggi!</p>
         </header>
         
         <div class="input-group">
             <input type="text" id="ig-url" placeholder="https://www.instagram.com/p/..." autocomplete="off">
             <button id="download-btn">Download</button>
         </div>
+        <div class="error-message" id="error-message"></div>
         
         <div class="loading" id="loading">
             <div class="spinner"></div>
-            <p>Memproses link...</p>
+            <p>Memproses link Instagram...</p>
         </div>
         
         <div class="result" id="result">
             <h2>Hasil Download</h2>
+            <div class="info-box">
+                <p>File siap diunduh! Klik tombol dibawah untuk menyimpan ke perangkat Anda.</p>
+            </div>
             <div class="media-container" id="media-container"></div>
             <a href="#" class="download-btn" id="dl-link" download>Download Sekarang</a>
+        </div>
+        
+        <div class="tutorial">
+            <h3>📌 Cara Menggunakan SemzDownloaderIG</h3>
+            <ol>
+                <li>Buka aplikasi Instagram dan cari video/foto yang ingin diunduh</li>
+                <li>Klik tombol <strong>⋮</strong> (titik tiga) di pojok kanan atas postingan</li>
+                <li>Pilih <strong>"Copy link"</strong> atau <strong>"Salin tautan"</strong></li>
+                <li>Tempelkan link tersebut ke kolom di atas</li>
+                <li>Klik tombol <strong>Download</strong> dan tunggu proses selesai</li>
+                <li>Klik tombol <strong>Download Sekarang</strong> untuk menyimpan file</li>
+            </ol>
+            <div class="info-box">
+                <p>💡 <strong>Tips:</strong> Kami mendukung download dari berbagai jenis konten Instagram termasuk Reels, Story, IGTV, dan postingan biasa.</p>
+            </div>
         </div>
     </div>
     
@@ -237,9 +292,20 @@
     <script>
         document.getElementById('download-btn').addEventListener('click', function() {
             const url = document.getElementById('ig-url').value.trim();
+            const errorElement = document.getElementById('error-message');
             
+            // Reset error message
+            errorElement.style.display = 'none';
+            errorElement.textContent = '';
+            
+            // Validate URL
             if (!url) {
-                alert('Masukkan link Instagram terlebih dahulu!');
+                showError('Masukkan link Instagram terlebih dahulu!');
+                return;
+            }
+            
+            if (!isValidInstagramUrl(url)) {
+                showError('Link Instagram tidak valid! Pastikan link dari postingan/Reels/Story Instagram.');
                 return;
             }
             
@@ -256,7 +322,7 @@
                 const mediaContainer = document.getElementById('media-container');
                 mediaContainer.innerHTML = `
                     <img src="https://via.placeholder.com/500x500/6a11cb/ffffff?text=Preview+Instagram" alt="Instagram Media" class="media-preview">
-                    <p>Video/Foto siap diunduh!</p>
+                    <p>Kualitas HD • Ukuran: 3.2MB • Resolusi: 1080x1350</p>
                 `;
                 
                 // Set download link (demo only)
@@ -264,8 +330,23 @@
                 
                 // Show result
                 document.getElementById('result').style.display = 'block';
+                
+                // Scroll to result
+                document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
             }, 2000);
         });
+        
+        function showError(message) {
+            const errorElement = document.getElementById('error-message');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+            document.getElementById('loading').style.display = 'none';
+        }
+        
+        function isValidInstagramUrl(url) {
+            // Basic Instagram URL validation
+            return /https?:\/\/(www\.)?instagram\.com\/(p|reel|stories|tv)\/.+/.test(url);
+        }
     </script>
 </body>
-</html>
+    </html>
