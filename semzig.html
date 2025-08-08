@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Downloader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #E1306C;
+            text-align: center;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #E1306C;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #C13584;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .media-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .media-container img, .media-container video {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+        .download-btn {
+            display: inline-block;
+            margin-top: 10px;
+            background-color: #405DE6;
+            color: white;
+            padding: 8px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Instagram Downloader</h1>
+        <p>Masukkan link Instagram (Post/Reel/Story) untuk mendownload:</p>
+        <input type="text" id="urlInput" placeholder="https://www.instagram.com/p/...">
+        <button onclick="downloadMedia()">Download</button>
+        <div id="error" class="error"></div>
+        
+        <div id="result" class="result" style="display: none;">
+            <h3>Hasil:</h3>
+            <div id="mediaContainer" class="media-container"></div>
+            <div id="downloadLinks"></div>
+        </div>
+    </div>
+
+    <script>
+        async function downloadMedia() {
+            const url = document.getElementById('urlInput').value.trim();
+            const errorElement = document.getElementById('error');
+            const resultElement = document.getElementById('result');
+            const mediaContainer = document.getElementById('mediaContainer');
+            const downloadLinks = document.getElementById('downloadLinks');
+            
+            // Reset UI
+            errorElement.textContent = '';
+            resultElement.style.display = 'none';
+            mediaContainer.innerHTML = '';
+            downloadLinks.innerHTML = '';
+            
+            // Validasi URL
+            if (!url) {
+                errorElement.textContent = 'Masukkan URL Instagram terlebih dahulu!';
+                return;
+            }
+            
+            if (!url.match(/https?:\/\/(www\.)?instagram\.com\/.+/i)) {
+                errorElement.textContent = 'URL tidak valid! Pastikan link dari Instagram.';
+                return;
+            }
+            
+            try {
+                // Menggunakan API pihak ketiga (perlu diganti dengan API Anda sendiri jika ingin production)
+                const apiUrl = `https://api.instagram.com/oembed/?url=${encodeURIComponent(url)}`;
+                const response = await fetch(apiUrl);
+                
+                if (!response.ok) {
+                    throw new Error('Gagal mengambil data dari Instagram');
+                }
+                
+                const data = await response.json();
+                
+                // Tampilkan hasil
+                resultElement.style.display = 'block';
+                
+                // Untuk demo, kita hanya menampilkan thumbnail
+                // Di implementasi nyata, Anda perlu backend untuk extract media
+                if (data.thumbnail_url) {
+                    const img = document.createElement('img');
+                    img.src = data.thumbnail_url;
+                    img.alt = 'Instagram Media';
+                    mediaContainer.appendChild(img);
+                    
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = data.thumbnail_url;
+                    downloadLink.className = 'download-btn';
+                    downloadLink.textContent = 'Download Gambar';
+                    downloadLink.download = 'instagram-media.jpg';
+                    downloadLinks.appendChild(downloadLink);
+                } else {
+                    mediaContainer.innerHTML = '<p>Media tidak ditemukan atau berupa video (diperlukan backend untuk download video).</p>';
+                }
+                
+            } catch (error) {
+                errorElement.textContent = 'Error: ' + error.message;
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>
