@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All TRX By Semz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #0a0a1a;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #0f0c29, #302b63);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            padding: 0.8rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        nav a {
+            color: #64b5f6;
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            margin: 0 0.5rem;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            border: 1px solid transparent;
+        }
+        
+        nav a:hover {
+            background: rgba(100, 181, 246, 0.1);
+            border-color: #64b5f6;
+            transform: translateY(-2px);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+        
+        .page {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        
+        .active {
+            display: block;
+        }
+        
+        /* Welcome Page Styling */
+        #welcome.active {
+            background: linear-gradient(135deg, #0f0c29, #24243e);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            border: 1px solid #303030;
+            margin-top: 2rem;
+        }
+        
+        .welcome-container {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .welcome-container h1 {
+            color: #64b5f6;
+            margin-bottom: 1.5rem;
+            font-size: 2.5rem;
+            text-shadow: 0 2px 10px rgba(100, 181, 246, 0.3);
+        }
+        
+        .welcome-container p {
+            margin-bottom: 1.2rem;
+            font-size: 1.1rem;
+            color: #b0b0b0;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #64b5f6, #1976d2);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(25, 118, 210, 0.4);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(25, 118, 210, 0.6);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+        
+        .feature-card {
+            background: rgba(30, 30, 60, 0.7);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid #303060;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background: rgba(40, 40, 80, 0.8);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #64b5f6;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card h3 {
+            color: #64b5f6;
+            margin-bottom: 0.8rem;
+        }
+        
+        /* Products Page Styling */
+        #products h2 {
+            color: #64b5f6;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .product-card {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
+            border: 1px solid #303060;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        .product-header {
+            background: linear-gradient(135deg, #0f0c29, #302b63);
+            color: white;
+            padding: 1.2rem;
+            text-align: center;
+            border-bottom: 1px solid #404080;
+        }
+        
+        .product-body {
+            padding: 1.5rem;
+        }
+        
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #64b5f6;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        
+        .product-features {
+            list-style-type: none;
+            margin-bottom: 1.5rem;
+        }
+        
+        .product-features li {
+            padding: 0.5rem 0;
+            position: relative;
+            padding-left: 1.8rem;
+            color: #d0d0d0;
+        }
+        
+        .product-features li:before {
+            content: "✓";
+            color: #64b5f6;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+        
+        .buy-btn {
+            display: block;
+            background: linear-gradient(135deg, #64b5f6, #1976d2);
+            color: white;
+            text-align: center;
+            padding: 0.8rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 1rem;
+            transition: all 0.3s;
+            border: none;
+        }
+        
+        .buy-btn:hover {
+            background: linear-gradient(135deg, #1976d2, #0d47a1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(25, 118, 210, 0.4);
+        }
+        
+        /* Guide Page Styling */
+        #guide h2 {
+            color: #64b5f6;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .guide-container {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            border: 1px solid #303060;
+        }
+        
+        .guide-container h3 {
+            color: #64b5f6;
+            margin: 1.5rem 0 1rem;
+            border-bottom: 1px solid #404080;
+            padding-bottom: 0.5rem;
+        }
+        
+        .guide-container ol, .guide-container ul {
+            padding-left: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .guide-container li {
+            margin-bottom: 0.8rem;
+            color: #d0d0d0;
+        }
+        
+        .guide-container strong {
+            color: #64b5f6;
+        }
+        
+        footer {
+            background: linear-gradient(135deg, #0f0c29, #1a1a2e);
+            color: #a0a0a0;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-top: 1px solid #303030;
+        }
+        
+        footer a {
+            color: #64b5f6;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        footer a:hover {
+            color: #42a5f5;
+            text-decoration: underline;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Glow Effect */
+        .glow {
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px #64b5f6, 0 0 10px #64b5f6;
+            }
+            to {
+                text-shadow: 0 0 10px #64b5f6, 0 0 20px #1976d2, 0 0 30px #0d47a1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="glow">All TRX By Semz</h1>
+        <p>Premium TRX Panels with Advanced Features</p>
+    </header>
+    
+    <nav>
+        <a href="#" onclick="showPage('welcome')">Beranda</a>
+        <a href="#" onclick="showPage('products')">Produk</a>
+        <a href="#" onclick="showPage('guide')">Panduan</a>
+    </nav>
+    
+    <div class="container">
+        <!-- Welcome Page -->
+        <div id="welcome" class="page active">
+            <div class="welcome-container">
+                <h1>Selamat Datang di All TRX By Semz</h1>
+                <p>Temukan berbagai panel TRX premium dengan fitur canggih untuk kebutuhan bisnis Anda.</p>
+                <p>Kami menyediakan solusi panel terbaik mulai dari Open Panel hingga Tangan Kanan Panel dengan berbagai keuntungan eksklusif.</p>
+                
+                <a href="#" onclick="showPage('products')" class="cta-button">Lihat Produk Kami</a>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>High Performance</h3>
+                        <p>Panel dengan performa tinggi dan stabilitas maksimal untuk kebutuhan bisnis Anda.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>Keamanan Terjamin</h3>
+                        <p>Sistem keamanan berlapis dengan teknologi R32c8 untuk proteksi maksimal.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">🚀</div>
+                        <h3>Fitur Unggulan</h3>
+                        <p>Anti delete, anti rusuh, dan berbagai fitur premium lainnya dalam satu panel.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Products Page -->
+        <div id="products" class="page">
+            <h2>Daftar Produk Premium</h2>
+            <div class="product-grid">
+                <!-- Open Panel 1-9gb -->
+                <div class="product-card">
+                    <div class="product-header">
+                        <h3>Open Panel 1-9gb</h3>
+                    </div>
+                    <div class="product-body">
+                        <div class="product-price">Rp 1.000 - 9.000</div>
+                        <ul class="product-features">
+                            <li>Anti Delete</li>
+                            <li>Awet</li>
+                            <li>Anti Rusuh</li>
+                            <li>Anti Intip</li>
+                            <li>R32c8</li>
+                        </ul>
+                        <a href="https://wa.me/6283869909316?text=Saya%20ingin%20membeli%20Open%20Panel%201-9gb" class="buy-btn" target="_blank">Beli Sekarang</a>
+                    </div>
+                </div>
+                
+                <!-- Open Panel Unli -->
+                <div class="product-card">
+                    <div class="product-header">
+                        <h3>Open Panel Unli</h3>
+                    </div>
+                    <div class="product-body">
+                        <div class="product-price">Rp 10.000</div>
+                        <ul class="product-features">
+                            <li>Anti Delete</li>
+                            <li>Awet</li>
+                            <li>Anti Rusuh</li>
+                            <li>Anti Intip</li>
+                            <li>R32c8</li>
+                        </ul>
+                        <a href="https://wa.me/6283869909316?text=Saya%20ingin%20membeli%20Open%20Panel%20Unli" class="buy-btn" target="_blank">Beli Sekarang</a>
+                    </div>
+                </div>
+                
+                <!-- Reseller Panel -->
+                <div class="product-card">
+                    <div class="product-header">
+                        <h3>Reseller Panel</h3>
+                    </div>
+                    <div class="product-body">
+                        <div class="product-price">Rp 13.000</div>
+                        <ul class="product-features">
+                            <li>Bisa create panel sepuasnya</li>
+                            <li>Balmod kalau usaha</li>
+                            <li>R32c8</li>
+                            <li>Jualan panel permanent</li>
+                        </ul>
+                        <a href="https://wa.me/6283869909316?text=Saya%20ingin%20membeli%20Reseller%20Panel" class="buy-btn" target="_blank">Beli Sekarang</a>
+                    </div>
+                </div>
+                
+                <!-- Admin Panel -->
+                <div class="product-card">
+                    <div class="product-header">
+                        <h3>Admin Panel</h3>
+                    </div>
+                    <div class="product-body">
+                        <div class="product-price">Rp 15.000</div>
+                        <ul class="product-features">
+                            <li>Bisa create panel sepuasnya</li>
+                            <li>Balmod kalau usaha</li>
+                            <li>R32c8</li>
+                            <li>Jualan panel permanent</li>
+                            <li>Bisa open reseller panel</li>
+                        </ul>
+                        <a href="https://wa.me/6283869909316?text=Saya%20ingin%20membeli%20Admin%20Panel" class="buy-btn" target="_blank">Beli Sekarang</a>
+                    </div>
+                </div>
+                
+                <!-- PT Panel -->
+                <div class="product-card">
+                    <div class="product-header">
+                        <h3>PT Panel</h3>
+                    </div>
+                    <div class="product-body">
+                        <div class="product-price">Rp 18.000</div>
+                        <ul class="product-features">
+                            <li>Bisa create panel sepuasnya</li>
+                            <li>Balmod kalau usaha</li>
+                            <li>R32c8</li>
+                            <li>Jualan panel permanent</li>
+                            <li>Bisa open reseller panel</li>
+                            <li>Bisa jual admin panel</li>
+                        </ul>
+                        <a href="https://wa.me/6283869909316?text=Saya%20ingin%20membeli%20PT%20Panel" class="buy-btn" target="_blank">Beli Sekarang</a>
+                    </div>
+                </div>
+                
+                <!-- Owner Panel -->
+                <div class="product-card">
+                    <div class="product-header">
+                        <h3>Owner Panel</h3>
+                    </div>
+                    <div class="product-body">
+                        <div class="product-price">Rp 20.000</div>
+                        <ul class="product-features">
+                            <li>Bisa create panel sepuasnya</li>
+                            <li>Balmod kalau usaha</li>
+                            <li>R32c8</li>
+                            <li>Jualan panel permanent</li>
+                            <li>Bisa open reseller panel</li>
+                            <li>Bisa jual admin panel</li>
+                            <li>Bisa jual PT panel</li>
+                        </ul>
+                        <a href="https://wa.me/6283869909316?text=Saya%20ingin%20membeli%20Owner%20Panel" class="buy-btn" target="_blank">Beli Sekarang</a>
+                    </div>
+                </div>
+                
+                <!-- Tangan Kanan Panel -->
+                <div class="product-card">
+                    <div class="product-header">
+                        <h3>Tangan Kanan Panel</h3>
+                    </div>
+                    <div class="product-body">
+                        <div class="product-price">Rp 30.000</div>
+                        <ul class="product-features">
+                            <li>Bisa create panel sepuasnya</li>
+                            <li>Balmod kalau usaha</li>
+                            <li>R32c8</li>
+                            <li>Jualan panel permanent</li>
+                            <li>Bisa open reseller panel</li>
+                            <li>Bisa jual admin panel</li>
+                            <li>Bisa jual PT panel</li>
+                        </ul>
+                        <a href="https://wa.me/6283869909316?text=Saya%20ingin%20membeli%20Tangan%20Kanan%20Panel" class="buy-btn" target="_blank">Beli Sekarang</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Guide Page -->
+        <div id="guide" class="page">
+            <h2>Panduan Penggunaan Panel TRX</h2>
+            <div class="guide-container">
+                <h3>Panduan Lengkap Penggunaan Panel TRX By Semz</h3>
+                <ol>
+                    <li><strong>Pembelian Panel</strong>: Pilih panel yang sesuai dengan kebutuhan Anda dari daftar produk kami.</li>
+                    <li><strong>Konfirmasi Pembelian</strong>: Klik tombol "Beli Sekarang" pada produk yang diinginkan untuk terhubung ke WhatsApp kami.</li>
+                    <li><strong>Pembayaran</strong>: Lakukan pembayaran sesuai dengan nominal yang tertera setelah konfirmasi dari admin.</li>
+                    <li><strong>Pengiriman Akses</strong>: Setelah pembayaran dikonfirmasi, Anda akan menerima akses panel beserta panduan penggunaannya.</li>
+                    <li><strong>Aktivasi Panel</strong>: Ikuti petunjuk yang diberikan untuk mengaktifkan panel Anda.</li>
+                    <li><strong>Penggunaan</strong>: Gunakan panel sesuai dengan jenis yang Anda beli (Open Panel, Reseller Panel, Admin Panel, dll).</li>
+                </ol>
+                
+                <h3>Fitur Umum Panel:</h3>
+                <ul class="product-features">
+                    <li>Anti Delete - Panel tidak mudah terhapus</li>
+                    <li>Awet - Tahan lama dalam penggunaan</li>
+                    <li>Anti Rusuh - Stabil dalam berbagai kondisi</li>
+                    <li>Anti Intip - Keamanan terjamin</li>
+                    <li>R32c8 - Kode keamanan khusus</li>
+                </ul>
+                
+                <h3>Untuk Reseller dan Level di Atasnya:</h3>
+                <ul class="product-features">
+                    <li>Bisa membuat panel sepuasnya sesuai paket</li>
+                    <li>Balmod untuk usaha</li>
+                    <li>Dapat menjual panel secara permanent</li>
+                    <li>Semakin tinggi level, semakin banyak jenis panel yang bisa dijual</li>
+                </ul>
+                
+                <p style="text-align: center; margin-top: 2rem;">
+                    <a href="https://wa.me/6283869909316" class="cta-button" target="_blank">Hubungi Kami via WhatsApp</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Hubungi kami di WhatsApp: <a href="https://wa.me/6283869909316">+62 838-6990-9316</a></p>
+        <p>&copy; 2023 All TRX By Semz. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show the selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+    </html>
