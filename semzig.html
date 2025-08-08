@@ -3,152 +3,269 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram Downloader</title>
+    <title>SemzDownloaderIG | Download Video/Foto Instagram</title>
     <style>
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --dark: #1a1a2e;
+            --darker: #16213e;
+            --light: #e6e6e6;
+            --accent: #00f2fe;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: var(--light);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-attachment: fixed;
         }
+        
         .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        h1 {
-            color: #E1306C;
+        
+        header {
             text-align: center;
+            margin-bottom: 2rem;
         }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            background: linear-gradient(to right, var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 242, 254, 0.3);
+        }
+        
+        .logo {
+            font-size: 1.2rem;
+            color: var(--accent);
+            letter-spacing: 3px;
+            margin-top: 0.5rem;
+        }
+        
+        .description {
+            color: #aaa;
+            margin: 1rem 0 2rem;
+            line-height: 1.6;
+        }
+        
+        .input-group {
+            display: flex;
+            margin-bottom: 1.5rem;
+        }
+        
         input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 8px 0 0 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
         }
+        
+        input[type="text"]:focus {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+        
+        input[type="text"]::placeholder {
+            color: #aaa;
+        }
+        
         button {
-            background-color: #E1306C;
+            padding: 15px 25px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 5px;
+            border-radius: 0 8px 8px 0;
             cursor: pointer;
-            font-size: 16px;
-            width: 100%;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s;
         }
+        
         button:hover {
-            background-color: #C13584;
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 117, 252, 0.4);
         }
+        
         .result {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 5px;
-            background-color: #f9f9f9;
+            display: none;
+            margin-top: 2rem;
+            animation: fadeIn 0.5s ease;
         }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
         .media-container {
-            margin-top: 20px;
+            margin-top: 1.5rem;
             text-align: center;
         }
-        .media-container img, .media-container video {
+        
+        .media-preview {
             max-width: 100%;
-            border-radius: 5px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
         }
+        
         .download-btn {
             display: inline-block;
-            margin-top: 10px;
-            background-color: #405DE6;
+            margin-top: 1.5rem;
+            padding: 12px 25px;
+            background: linear-gradient(to right, #00b09b, #96c93d);
             color: white;
-            padding: 8px 15px;
             text-decoration: none;
-            border-radius: 5px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s;
         }
-        .error {
-            color: red;
-            margin-top: 10px;
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(150, 201, 61, 0.4);
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--accent);
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        footer {
+            margin-top: auto;
+            text-align: center;
+            padding: 1.5rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 1.5rem;
+                width: 95%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
+            
+            input[type="text"] {
+                border-radius: 8px;
+                margin-bottom: 10px;
+            }
+            
+            button {
+                border-radius: 8px;
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Instagram Downloader</h1>
-        <p>Masukkan link Instagram (Post/Reel/Story) untuk mendownload:</p>
-        <input type="text" id="urlInput" placeholder="https://www.instagram.com/p/...">
-        <button onclick="downloadMedia()">Download</button>
-        <div id="error" class="error"></div>
+        <header>
+            <h1>SemzDownloaderIG</h1>
+            <div class="logo">DOWNLOAD VIDEO/FOTO INSTAGRAM</div>
+            <p class="description">Masukkan link Instagram di bawah ini untuk mengunduh konten dengan mudah dan cepat.</p>
+        </header>
         
-        <div id="result" class="result" style="display: none;">
-            <h3>Hasil:</h3>
-            <div id="mediaContainer" class="media-container"></div>
-            <div id="downloadLinks"></div>
+        <div class="input-group">
+            <input type="text" id="ig-url" placeholder="https://www.instagram.com/p/..." autocomplete="off">
+            <button id="download-btn">Download</button>
+        </div>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Memproses link...</p>
+        </div>
+        
+        <div class="result" id="result">
+            <h2>Hasil Download</h2>
+            <div class="media-container" id="media-container"></div>
+            <a href="#" class="download-btn" id="dl-link" download>Download Sekarang</a>
         </div>
     </div>
-
+    
+    <footer>
+        &copy; 2023 SemzDownloaderIG | All Rights Reserved
+    </footer>
+    
     <script>
-        async function downloadMedia() {
-            const url = document.getElementById('urlInput').value.trim();
-            const errorElement = document.getElementById('error');
-            const resultElement = document.getElementById('result');
-            const mediaContainer = document.getElementById('mediaContainer');
-            const downloadLinks = document.getElementById('downloadLinks');
+        document.getElementById('download-btn').addEventListener('click', function() {
+            const url = document.getElementById('ig-url').value.trim();
             
-            // Reset UI
-            errorElement.textContent = '';
-            resultElement.style.display = 'none';
-            mediaContainer.innerHTML = '';
-            downloadLinks.innerHTML = '';
-            
-            // Validasi URL
             if (!url) {
-                errorElement.textContent = 'Masukkan URL Instagram terlebih dahulu!';
+                alert('Masukkan link Instagram terlebih dahulu!');
                 return;
             }
             
-            if (!url.match(/https?:\/\/(www\.)?instagram\.com\/.+/i)) {
-                errorElement.textContent = 'URL tidak valid! Pastikan link dari Instagram.';
-                return;
-            }
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
             
-            try {
-                // Menggunakan API pihak ketiga (perlu diganti dengan API Anda sendiri jika ingin production)
-                const apiUrl = `https://api.instagram.com/oembed/?url=${encodeURIComponent(url)}`;
-                const response = await fetch(apiUrl);
+            // Simulate processing (in a real app, you would call an API here)
+            setTimeout(function() {
+                // Hide loading
+                document.getElementById('loading').style.display = 'none';
                 
-                if (!response.ok) {
-                    throw new Error('Gagal mengambil data dari Instagram');
-                }
+                // Show result (demo only - in real app you would get actual media)
+                const mediaContainer = document.getElementById('media-container');
+                mediaContainer.innerHTML = `
+                    <img src="https://via.placeholder.com/500x500/6a11cb/ffffff?text=Preview+Instagram" alt="Instagram Media" class="media-preview">
+                    <p>Video/Foto siap diunduh!</p>
+                `;
                 
-                const data = await response.json();
+                // Set download link (demo only)
+                document.getElementById('dl-link').href = "#";
                 
-                // Tampilkan hasil
-                resultElement.style.display = 'block';
-                
-                // Untuk demo, kita hanya menampilkan thumbnail
-                // Di implementasi nyata, Anda perlu backend untuk extract media
-                if (data.thumbnail_url) {
-                    const img = document.createElement('img');
-                    img.src = data.thumbnail_url;
-                    img.alt = 'Instagram Media';
-                    mediaContainer.appendChild(img);
-                    
-                    const downloadLink = document.createElement('a');
-                    downloadLink.href = data.thumbnail_url;
-                    downloadLink.className = 'download-btn';
-                    downloadLink.textContent = 'Download Gambar';
-                    downloadLink.download = 'instagram-media.jpg';
-                    downloadLinks.appendChild(downloadLink);
-                } else {
-                    mediaContainer.innerHTML = '<p>Media tidak ditemukan atau berupa video (diperlukan backend untuk download video).</p>';
-                }
-                
-            } catch (error) {
-                errorElement.textContent = 'Error: ' + error.message;
-                console.error(error);
-            }
-        }
+                // Show result
+                document.getElementById('result').style.display = 'block';
+            }, 2000);
+        });
     </script>
 </body>
 </html>
