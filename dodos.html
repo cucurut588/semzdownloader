@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semz DDoS Tools</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #000;
+            color: #ff0000;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://i.imgur.com/JqYeYnT.png');
+            background-size: cover;
+            background-attachment: fixed;
+        }
+        .header {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            text-align: center;
+            border-bottom: 2px solid #ff0000;
+        }
+        .header img {
+            height: 80px;
+            margin-bottom: 10px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            border: 2px solid #ff0000;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            box-shadow: 0 0 15px #ff0000;
+        }
+        .login-box, .target-box {
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            color: #ff0000;
+            text-align: center;
+            text-shadow: 0 0 5px #ff0000;
+        }
+        input[type="text"], input[type="password"], input[type="url"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #111;
+            border: 1px solid #ff0000;
+            color: #ff0000;
+        }
+        button {
+            background-color: #ff0000;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+            margin: 10px 0;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #cc0000;
+            box-shadow: 0 0 10px #ff0000;
+        }
+        .console {
+            background-color: #111;
+            border: 1px solid #ff0000;
+            padding: 15px;
+            height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            white-space: pre;
+            margin-top: 20px;
+            display: none;
+        }
+        .progress {
+            width: 100%;
+            background-color: #111;
+            border: 1px solid #ff0000;
+            margin-top: 10px;
+        }
+        .progress-bar {
+            width: 0%;
+            height: 30px;
+            background-color: #ff0000;
+            text-align: center;
+            line-height: 30px;
+            color: black;
+            font-weight: bold;
+        }
+        .hidden {
+            display: none;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            border-top: 1px solid #ff0000;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="https://i.imgur.com/JqYeYnT.png" alt="Venom Logo">
+        <h1>Semz DDoS Tools</h1>
+    </div>
+
+    <div class="container">
+        <div id="login-section">
+            <div class="login-box">
+                <h2>Login Required</h2>
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button onclick="checkLogin()">LOGIN</button>
+                <p id="login-error" style="color: #ff0000; text-align: center;"></p>
+            </div>
+        </div>
+
+        <div id="target-section" class="hidden">
+            <div class="target-box">
+                <h2>Target Selection</h2>
+                <input type="url" id="target-url" placeholder="Enter target URL (e.g., http://example.com)" required>
+                <button onclick="startDDoS()">GASS DDOS</button>
+            </div>
+
+            <div class="console" id="console">
+                <div id="console-content"></div>
+            </div>
+            <div class="progress hidden" id="progress-container">
+                <div class="progress-bar" id="progress-bar">0%</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Semz DDoS Tools - For educational purposes only
+    </div>
+
+    <script>
+        function checkLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorElement = document.getElementById('login-error');
+            
+            if (username === 'semzoffc' && password === 'semzvip') {
+                document.getElementById('login-section').classList.add('hidden');
+                document.getElementById('target-section').classList.remove('hidden');
+            } else {
+                errorElement.textContent = 'Invalid username or password!';
+            }
+        }
+
+        function startDDoS() {
+            const targetUrl = document.getElementById('target-url').value;
+            
+            if (!targetUrl) {
+                alert('Please enter a target URL!');
+                return;
+            }
+
+            document.getElementById('console').style.display = 'block';
+            document.getElementById('progress-container').classList.remove('hidden');
+            
+            const consoleContent = document.getElementById('console-content');
+            const progressBar = document.getElementById('progress-bar');
+            
+            consoleContent.innerHTML += `> Initializing attack on ${targetUrl}\n`;
+            consoleContent.innerHTML += `> Gathering botnet resources...\n`;
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 1;
+                progressBar.style.width = progress + '%';
+                progressBar.textContent = progress + '%';
+                
+                if (progress % 10 === 0) {
+                    consoleContent.innerHTML += `> Sending packet flood (${progress}% completed)\n`;
+                    consoleContent.innerHTML += `> Bypassing firewall...\n`;
+                }
+                
+                if (progress === 50) {
+                    consoleContent.innerHTML += `> Mid-attack status: Target response slowing\n`;
+                }
+                
+                if (progress === 75) {
+                    consoleContent.innerHTML += `> Target services beginning to fail\n`;
+                }
+                
+                if (progress === 100) {
+                    consoleContent.innerHTML += `> ATTACK COMPLETE!\n`;
+                    consoleContent.innerHTML += `> Target ${targetUrl} should be offline now\n`;
+                    clearInterval(interval);
+                    
+                    // Scroll to bottom of console
+                    consoleContent.scrollTop = consoleContent.scrollHeight;
+                }
+            }, 100);
+        }
+    </script>
+</body>
+</html>
