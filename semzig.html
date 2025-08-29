@@ -1,19 +1,378 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <title>Instagram Downloader</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Video Downloader</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .logo {
+            font-size: 42px;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D, #F56040, #F77737, #FCAF45, #FFDC80);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        h1 {
+            color: #405DE6;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        
+        .description {
+            color: #555;
+            margin-bottom: 25px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        .input-group {
+            display: flex;
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        input[type="text"] {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px 0 0 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus {
+            border-color: #405DE6;
+            outline: none;
+        }
+        
+        button {
+            background: #405DE6;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #3a4ed5;
+        }
+        
+        button:disabled {
+            background: #a0a0a0;
+            cursor: not-allowed;
+        }
+        
+        .result {
+            margin-top: 25px;
+            display: none;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .video-preview {
+            width: 100%;
+            display: block;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            background: #25D366;
+            color: white;
+            text-decoration: none;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+        
+        .download-btn:hover {
+            background: #20bd5c;
+            color: white;
+        }
+        
+        .loader {
+            display: none;
+            margin: 20px auto;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #405DE6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error {
+            color: #ff3333;
+            margin-top: 15px;
+            padding: 10px;
+            background: #ffeeee;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .instructions {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            text-align: left;
+        }
+        
+        .instructions h3 {
+            margin-bottom: 10px;
+            color: #405DE6;
+            display: flex;
+            align-items: center;
+        }
+        
+        .instructions h3 i {
+            margin-right: 10px;
+        }
+        
+        .instructions ol {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        footer {
+            margin-top: 30px;
+            color: #fff;
+            font-size: 14px;
+            text-align: center;
+        }
+        
+        .api-notice {
+            background: #fff8e1;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: left;
+            font-size: 14px;
+            color: #856404;
+            border-left: 4px solid #ffc107;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
+            
+            input[type="text"] {
+                border-radius: 8px;
+                margin-bottom: 10px;
+            }
+            
+            button {
+                border-radius: 8px;
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1>Instagram Downloader</h1>
-  <input id="link" type="text" placeholder="Masukkan link Instagram">
-  <button id="download">Download</button>
-  <div id="result"></div>
+    <div class="logo">
+        <i class="fab fa-instagram"></i>
+    </div>
+    
+    <div class="container">
+        <h1>Instagram Video Downloader</h1>
+        <p class="description">Download video Instagram dengan mudah dan cepat. Cukup tempelkan link video Instagram di bawah ini.</p>
+        
+        <div class="input-group">
+            <input type="text" id="instagram-url" placeholder="Tempelkan link Instagram di sini...">
+            <button id="fetch-btn">Ambil Video</button>
+        </div>
+        
+        <div class="loader" id="loader"></div>
+        
+        <div class="error" id="error-message"></div>
+        
+        <div class="result" id="result">
+            <div class="video-container">
+                <video controls class="video-preview" id="video-preview"></video>
+            </div>
+            <a href="#" class="download-btn" id="direct-download" download>
+                <i class="fas fa-download"></i> Download Video Sekarang
+            </a>
+        </div>
+        
+        <div class="api-notice">
+            <strong>Catatan:</strong> Downloader ini menggunakan API publik. Terkadang Instagram melakukan perubahan yang mempengaruhi kerja API. Jika terjadi error, coba lagi beberapa saat kemudian.
+        </div>
+        
+        <div class="instructions">
+            <h3><i class="fas fa-info-circle"></i> Cara Menggunakan:</h3>
+            <ol>
+                <li>Buka aplikasi Instagram dan temukan video yang ingin diunduh</li>
+                <li>Ketuk tombol tiga titik (⋯) di atas postingan</li>
+                <li>Pilih "Salin Tautan" atau "Copy Link"</li>
+                <li>Kembali ke halaman ini dan tempelkan link pada kolom di atas</li>
+                <li>Klik tombol "Ambil Video" dan tunggu beberapa saat</li>
+                <li>Video siap diunduh!</li>
+            </ol>
+        </div>
+    </div>
 
-  <script src="script.js"></script>
+    <footer>
+        <p>© 2023 Instagram Video Downloader | Untuk keperluan pribadi</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlInput = document.getElementById('instagram-url');
+            const fetchBtn = document.getElementById('fetch-btn');
+            const loader = document.getElementById('loader');
+            const errorMessage = document.getElementById('error-message');
+            const result = document.getElementById('result');
+            const videoPreview = document.getElementById('video-preview');
+            const directDownload = document.getElementById('direct-download');
+            
+            // Event listener untuk paste
+            urlInput.addEventListener('paste', function(e) {
+                setTimeout(function() {
+                    if(isValidInstagramUrl(urlInput.value)) {
+                        fetchBtn.disabled = false;
+                    }
+                }, 100);
+            });
+            
+            fetchBtn.addEventListener('click', function() {
+                const url = urlInput.value.trim();
+                
+                if (!url) {
+                    showError('Silakan masukkan link Instagram');
+                    return;
+                }
+                
+                if (!isValidInstagramUrl(url)) {
+                    showError('Link Instagram tidak valid. Pastikan link dari Instagram');
+                    return;
+                }
+                
+                // Reset state sebelumnya
+                hideError();
+                result.style.display = 'none';
+                
+                // Tampilkan loader
+                loader.style.display = 'block';
+                fetchBtn.disabled = true;
+                
+                // Gunakan API untuk mengambil video Instagram
+                fetchInstagramVideo(url);
+            });
+            
+            async function fetchInstagramVideo(url) {
+                try {
+                    // Menggunakan API instagram-downloader yang tersedia
+                    // Catatan: API ini mungkin tidak selalu bekerja karena perubahan oleh Instagram
+                    const apiUrl = `https://api.indogram.app/api/ig/?url=${encodeURIComponent(url)}`;
+                    
+                    const response = await fetch(apiUrl);
+                    
+                    if (!response.ok) {
+                        throw new Error('Gagal mengambil video. Coba lagi nanti.');
+                    }
+                    
+                    const data = await response.json();
+                    
+                    if (data && data.media) {
+                        // Sembunyikan loader
+                        loader.style.display = 'none';
+                        fetchBtn.disabled = false;
+                        
+                        // Tampilkan video dan tombol download
+                        videoPreview.src = data.media;
+                        directDownload.href = data.media;
+                        directDownload.download = 'instagram-video.mp4';
+                        
+                        result.style.display = 'block';
+                        
+                        // Scroll ke hasil
+                        result.scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                        throw new Error('Tidak dapat menemukan video di URL tersebut');
+                    }
+                } catch (error) {
+                    loader.style.display = 'none';
+                    fetchBtn.disabled = false;
+                    showError(error.message || 'Terjadi kesalahan. Silakan coba lagi.');
+                }
+            }
+            
+            function isValidInstagramUrl(url) {
+                // Regex untuk memvalidasi URL Instagram
+                const instagramRegex = /https?:\/\/(www\.)?instagram\.com\/(p|reel|stories)\/[a-zA-Z0-9_-]+\/?/;
+                return instagramRegex.test(url);
+            }
+            
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+            }
+            
+            function hideError() {
+                errorMessage.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
